@@ -5,10 +5,8 @@ add_requires("nlohmann_json master")
 set_languages("cxx20")
 set_warnings("all", "error")
 
-target("xmake-inja-test")
-    set_kind("binary")
-    add_files("*.cc")
-    add_packages("nlohmann_json")
+target("xmake-inja-test-packfile")
+    set_kind("phony")
     before_build(function (target)
         import("core.base.task")
         task.run("inja", {
@@ -22,3 +20,10 @@ target("xmake-inja-test")
             format = true,
         })
     end)
+target_end()
+
+target("xmake-inja-test")
+    set_kind("binary")
+    add_files("*.cc")
+    add_packages("nlohmann_json")
+    add_deps("xmake-inja-test-packfile")
